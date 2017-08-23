@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.wuguanglin.relarecyclerview.MainActivity">
+    tools:context="com.example.wuguanglin.relarecyclerview.activity.MainActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/headFootRecyclerView"
+    <com.example.wuguanglin.relarecyclerview.RecyclerView.LoadMoreRecyclerView
+        android:id="@+id/loadMoreRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"/>
 
 </android.support.constraint.ConstraintLayout>

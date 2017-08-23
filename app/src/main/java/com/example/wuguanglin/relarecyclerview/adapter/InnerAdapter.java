@@ -19,6 +19,15 @@ public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.MyViewHolder
     private Context context;
     private LayoutInflater inflater;
     private List<String> list;
+    private OnItemClickListener onItemClickListener;
+
+    public interface OnItemClickListener{
+        void onItemClick();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.onItemClickListener = listener;
+    }
 
     public InnerAdapter(Context context, List<String> list) {
         this.context = context;
@@ -34,6 +43,12 @@ public class InnerAdapter extends RecyclerView.Adapter<InnerAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.itemText.setText(list.get(position));
+        holder.itemText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onItemClick();
+            }
+        });
     }
 
     @Override

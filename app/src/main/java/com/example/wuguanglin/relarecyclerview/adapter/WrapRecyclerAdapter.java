@@ -47,25 +47,29 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     //添加Header
     public void addHeaderView(View view){
         mHeaderViews.put(mHeaderViews.size() + BASE_ITEM_TYPE_HEADER, view);
+        notifyDataSetChanged();
     }
 
     //添加Footer
     public void addFooterView(View view){
         mFooterViews.put(mFooterViews.size() + BASE_ITEM_TYPE_FOOTER, view);
+        notifyDataSetChanged();
     }
 
     //移除头部
-    private void removeHeader(View view){
+    public void removeHeader(View view){
         int index = mHeaderViews.indexOfValue(view);
         if (index < 0)return;
         mHeaderViews.removeAt(index);
+        notifyDataSetChanged();
     }
 
     //移除底部
-    private void removeFooter(View view){
+    public void removeFooter(View view){
         int index = mFooterViews.indexOfValue(view);
         if (index < 0)return;
         mFooterViews.removeAt(index);
+        notifyDataSetChanged();
     }
     /*
     *创建头部或底部的holder
@@ -118,7 +122,28 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mAdapter.getItemViewType(position - mHeaderViews.size());
     }
 
+
+
     /*使GridView添加头部或尾部时，头部或尾部能单独占用一行*/
+    /*
+    private void adjustSpanSize(RecyclerView recyclerView){
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager){
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager)layoutManager;
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int viewType = getItemViewType(position);
+                    if (mHeaderViews.get(viewType) != null || mFooterViews.get(viewType) != null){
+                        return gridLayoutManager.getSpanCount();
+                    }
+                    return 1;
+                }
+            });
+        }
+    }
+    */
+    /*
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         mAdapter.onAttachedToRecyclerView(recyclerView);
@@ -137,9 +162,9 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         }
     }
-
+    */
     /*使StaggeredGridLayoutManager添加头部或尾部能独占一行*/
-
+    /*
     @Override
     public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         mAdapter.onViewAttachedToWindow(holder);
@@ -152,4 +177,5 @@ public class WrapRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
         }
     }
+    */
 }
