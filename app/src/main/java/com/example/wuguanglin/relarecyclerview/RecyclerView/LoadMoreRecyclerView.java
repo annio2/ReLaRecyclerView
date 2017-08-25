@@ -1,7 +1,6 @@
 package com.example.wuguanglin.relarecyclerview.RecyclerView;
 
 import android.animation.ValueAnimator;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
@@ -129,11 +128,11 @@ public class LoadMoreRecyclerView extends WrapRecyclerView {
                 if (loadMoreCreator != null){
                     loadViewHeight = loadView.getMeasuredHeight();
                 }
-//                if (currentDrag){
-//
-//                }
+                if (currentDrag){
+                    scrollToPosition(getAdapter().getItemCount() - 1);
+                }
                 //获取手指触摸拖拽的距离
-                int distanceY = (int) ((e.getRawY() - mFingerDowm) * mDragIndex);
+                int distanceY = (int) (e.getRawY() - mFingerDowm);
                 if (distanceY < 0) {
                     setLoadViewMarginBottom(-distanceY);
                     updateLoadStatus(-distanceY);
@@ -188,7 +187,7 @@ public class LoadMoreRecyclerView extends WrapRecyclerView {
     }
 
     //停止加载更多
-    private void onStopLoad(){
+    public void onStopLoad(){
         currentStatus = LOAD_STATUS_NORMAL;
         restoreLoadView();
         if (loadMoreCreator != null){

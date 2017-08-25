@@ -1,11 +1,14 @@
 package com.example.wuguanglin.relarecyclerview.activity;
 
+import android.content.res.XmlResourceParser;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wuguanglin.relarecyclerview.R;
@@ -15,6 +18,7 @@ import com.example.wuguanglin.relarecyclerview.RecyclerView.WrapRecyclerView;
 import com.example.wuguanglin.relarecyclerview.adapter.InnerAdapter;
 import com.example.wuguanglin.relarecyclerview.assistant.DefaultLoadCreator;
 import com.example.wuguanglin.relarecyclerview.assistant.LoadMoreCreator;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -30,25 +34,31 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();
 
-        final InnerAdapter adapter = new InnerAdapter(this, list);
-        adapter.setOnItemClickListener(new InnerAdapter.OnItemClickListener() {
+        InnerAdapter adapter = new InnerAdapter(this, list);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addLoadMoreCreator(new DefaultLoadCreator());
+        recyclerView.setOnLoadMoreListener(new LoadMoreRecyclerView.OnLoadMoreListener() {
             @Override
-            public void onItemClick() {
-                Toast.makeText(MainActivity.this, "item被点击", Toast.LENGTH_SHORT).show();
+            public void onLoad() {
+                Toast.makeText(MainActivity.this, "正在加载", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(2000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    recyclerView.onStopLoad();
+                                }
+                            });
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
-        recyclerView.setAdapter(adapter);
-//        View header = LayoutInflater.from(this).inflate(R.layout.header, null);
-//        recyclerView.addFooter(header);
-        recyclerView.addLoadMoreCreator(new DefaultLoadCreator());
-//        recyclerView.setOnLoadMoreListener(new LoadMoreRecyclerView.OnLoadMoreListener() {
-//            @Override
-//            public void onLoad() {
-//                Toast.makeText(MainActivity.this, "正在加载", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
     }
 
     void initView(){
